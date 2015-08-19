@@ -11,18 +11,37 @@ var {
   StyleSheet,
   Text,
   View,
-  Navigator
+  Navigator,
+  TouchableHighlight
 } = React;
 
 class ReactNativeDemo extends React.Component {
+  constructor() {
+    super();
+    this.handlePressMessage = this.handlePressMessage.bind(this);
+    this.state = { message : "Initial Message", messagenum : 0,
+    };
+  }
+
+  handlePressMessage(msg) {
+    if (this.state.messagenum === 0) {
+      this.setState({message : msg, messagenum: 1});
+    }
+    else {
+      this.setState({message: "Inital Message", messagenum: 0});
+    }
+  }
+
   render() {
-    let message = "Child2 Message";
     return (
       <View style={styles.container} >
         <Text style={styles.lrgtxt}>
           Master Text
         </Text>
-        <Child1 message={message}  />
+        <Child1
+          message={this.state.message}
+          onUserInput={this.handlePressMessage}
+        />
       </View>
     );
   }
@@ -35,13 +54,20 @@ class Child1 extends React.Component {
         <Text style={styles.lrgtxt}>
           Child1 Text
         </Text>
-        <Child2 message={this.props.message}/>
+        <Child2
+          message={this.props.message}
+          onUserInput={this.props.onUserInput}
+        />
       </View>
     );
   }
 }
 
 class Child2 extends React.Component {
+  handleChange() {
+    var msg = "New Message!";
+    this.props.onUserInput(msg);
+  }
   render() {
     return(
       <View>
@@ -49,8 +75,13 @@ class Child2 extends React.Component {
           Child2 Text
         </Text>
         <Text>
-          {this.props.message}
+          Message: {this.props.message}
         </Text>
+        <TouchableHighlight onPress={this.handleChange.bind(this)}>
+          <Text style={{fontWeight:'bold',}}>
+            Click to change message
+          </Text>
+        </TouchableHighlight>
       </View>
     );
   }
