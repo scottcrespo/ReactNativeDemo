@@ -16,12 +16,13 @@ var {
 
 class ReactNativeDemo extends React.Component {
   render() {
+    let message = "Child2 Message";
     return (
       <View style={styles.container} >
         <Text style={styles.lrgtxt}>
           Master Text
         </Text>
-        <Child1 />
+        <Child1 message={message}  />
       </View>
     );
   }
@@ -34,7 +35,7 @@ class Child1 extends React.Component {
         <Text style={styles.lrgtxt}>
           Child1 Text
         </Text>
-        <Child2 />
+        <Child2 message={this.props.message}/>
       </View>
     );
   }
@@ -46,6 +47,9 @@ class Child2 extends React.Component {
       <View>
         <Text style={styles.lrgtxt}>
           Child2 Text
+        </Text>
+        <Text>
+          {this.props.message}
         </Text>
       </View>
     );
